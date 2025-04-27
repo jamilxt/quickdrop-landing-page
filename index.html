@@ -16,7 +16,7 @@
                             200: '#c1f0e9',
                             300: '#9ce6dd',
                             400: '#7adbd0',
-                            500: '#34c0b3', // Base hue
+                            500: '#34c0b3',
                             600: '#2ca69b',
                             700: '#248880',
                             800: '#1d6c66',
@@ -29,31 +29,6 @@
         }
     </script>
     <style>
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(44, 166, 155, 0.3); }
-            50% { box-shadow: 0 0 12px 5px rgba(44, 166, 155, 0); }
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .animate-fade-in-down { animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both; }
-        .animate-pulse-glow { animation: pulseGlow 2.5s infinite ease-in-out; }
-        .bg-gradient-animated {
-            background: linear-gradient(45deg, #2ca69b, #7adbd0, #9ce6dd, #2ca69b);
-            background-size: 200% 200%;
-            animation: gradientShift 12s ease-in-out infinite;
-        }
         .card-tilt {
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: perspective(1000px);
@@ -63,7 +38,7 @@
             box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15), 0 0 10px rgba(44, 166, 155, 0.2);
         }
         .hero-clip {
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 95%, 0 85%);
         }
         .wave-divider {
             position: absolute;
@@ -71,7 +46,7 @@
             left: 0;
             width: 100%;
             height: 80px;
-            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23f5fffd" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,213.3C960,224,1056,192,1152,181.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23e0f8f4" fill-opacity="1" d="M0,96C120,128,240,192,360,208C480,224,600,192,720,160C840,128,960,96,1080,112C1200,128,1320,192,1380,224L1440,256H0Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom;
             background-size: cover;
         }
         .button-ripple {
@@ -121,6 +96,9 @@
             background-size: cover;
             transform: translateZ(0);
         }
+        .hero-overlay {
+            background: rgba(24, 88, 81, 0.35);
+        }
     </style>
 </head>
 <body class="bg-bright-turquoise-50 font-sans antialiased">
@@ -142,22 +120,22 @@
                 <a href="/rider" class="text-bright-turquoise-800 hover:text-bright-turquoise-600 transition duration-300 focus-visible">Rider</a>
                 <a href="/contact" class="text-bright-turquoise-800 hover:text-bright-turquoise-600 transition duration-300 focus-visible">Contact</a>
                 <a href="/auth/login" class="text-bright-turquoise-600 border border-bright-turquoise-600 px-6 py-2 rounded-full hover:bg-bright-turquoise-600 hover:text-white transition duration-300 button-ripple focus-visible md:ml-4">Login</a>
-                <a href="/auth/register" class="bg-gradient-to-r from-bright-turquoise-600 to-bright-turquoise-400 text-white px-6 py-2 rounded-full hover:scale-105 transition transform duration-300 button-ripple animate-pulse-glow focus-visible">Register</a>
+                <a href="/auth/register" class="bg-gradient-to-r from-bright-turquoise-600 to-bright-turquoise-400 text-white px-6 py-2 rounded-full hover:scale-105 transition transform duration-300 button-ripple focus-visible">Register</a>
             </div>
         </nav>
     </header>
 
     <!-- Hero Section -->
-    <section class="relative bg-gradient-animated text-white py-28 hero-clip overflow-hidden bg-parallax">
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.15"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30v4h-2V4h-4V2h4V0h2v2h4v2h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-60"></div>
+    <section class="relative bg-gradient-to-br from-bright-turquoise-700 to-bright-turquoise-600 text-white min-h-[600px] md:min-h-[700px] py-20 md:py-24 hero-clip overflow-hidden bg-parallax">
+        <div class="absolute inset-0 hero-overlay"></div>
         <div class="wave-divider"></div>
         <div class="container mx-auto px-6 text-center relative z-10">
-            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 animate-fade-in-down tracking-tight leading-tight">Swift Delivery, Redefined</h2>
-            <p class="text-xl mb-10 max-w-3xl mx-auto animate-fade-in-up leading-relaxed">Unleash the power of QuickDrop’s innovative logistics for seamless, lightning-fast parcel delivery.</p>
-            <form action="/track" method="post" class="max-w-md mx-auto flex animate-fade-in-up" role="search" aria-label="Track parcel">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight leading-tight">Swift Delivery, Redefined</h2>
+            <p class="text-lg mb-10 max-w-3xl mx-auto leading-relaxed">Unleash the power of QuickDrop’s innovative logistics for seamless, lightning-fast parcel delivery.</p>
+            <form action="/track" method="post" class="max-w-lg mx-auto flex" role="search" aria-label="Track parcel">
                 <label for="trackingNumber" class="sr-only">Tracking Number</label>
-                <input type="text" id="trackingNumber" name="trackingNumber" placeholder="Enter tracking number" class="w-full px-5 py-3 rounded-l-full bg-white/10 backdrop-blur-lg text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-bright-turquoise-300 transition duration-300 focus-visible">
-                <button type="submit" class="bg-bright-turquoise-700 text-white px-8 py-3 rounded-r-full hover:bg-bright-turquoise-800 transition duration-300 button-ripple flex items-center gap-2 focus-visible">
+                <input type="text" id="trackingNumber" name="trackingNumber" placeholder="Enter tracking number" class="w-full px-5 py-3 rounded-l-full bg-white/10 backdrop-blur-2xl text-white placeholder-white/80 border border-white/40 focus:outline-none focus:ring-2 focus:ring-bright-turquoise-300 transition duration-300 focus-visible">
+                <button type="submit" class="bg-bright-turquoise-800 text-white px-8 py-3 rounded-r-full hover:bg-bright-turquoise-900 transition duration-300 button-ripple flex items-center gap-2 focus-visible">
                     Track Now
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -170,10 +148,10 @@
     <!-- Become a Rider Section -->
     <section class="py-20 bg-white/80 backdrop-blur-md relative">
         <div class="container mx-auto px-6 text-center">
-            <h3 class="text-4xl font-semibold mb-8 text-bright-turquoise-900 animate-fade-in-down leading-tight">Join the QuickDrop Crew</h3>
-            <p class="text-lg text-bright-turquoise-800 mb-10 max-w-3xl mx-auto animate-fade-in-up leading-relaxed">Ride with purpose, deliver joy, and earn rewards with QuickDrop’s rider program.</p>
+            <h3 class="text-4xl font-semibold mb-8 text-bright-turquoise-900 leading-tight">Join the QuickDrop Crew</h3>
+            <p class="text-lg text-bright-turquoise-800 mb-10 max-w-3xl mx-auto leading-relaxed">Ride with purpose, deliver joy, and earn rewards with QuickDrop’s rider program.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="/rider/register" class="inline-block px-8 py-4 bg-bright-turquoise-700 text-white font-semibold rounded-full hover:scale-105 transition transform duration-300 button-ripple animate-pulse-glow focus-visible">Become a Rider</a>
+                <a href="/rider/register" class="inline-block px-8 py-4 bg-bright-turquoise-700 text-white font-semibold rounded-full hover:scale-105 transition transform duration-300 button-ripple focus-visible">Become a Rider</a>
                 <a href="/rider/login" class="inline-block px-8 py-4 text-bright-turquoise-600 border border-bright-turquoise-600 font-semibold rounded-full hover:bg-bright-turquoise-600 hover:text-white transition duration-300 button-ripple focus-visible">Rider Login</a>
             </div>
         </div>
@@ -182,8 +160,8 @@
     <!-- How It Works Section -->
     <section class="py-20 bg-bright-turquoise-50 relative">
         <div class="container mx-auto px-6 text-center">
-            <h3 class="text-4xl font-semibold mb-8 text-bright-turquoise-900 animate-fade-in-down leading-tight">How QuickDrop Works</h3>
-            <p class="text-lg font-semibold text-bright-turquoise-800 mb-12 max-w-3xl mx-auto animate-fade-in-up leading-relaxed">Discover the effortless journey of your parcel with our innovative process.</p>
+            <h3 class="text-4xl font-semibold mb-8 text-bright-turquoise-900 leading-tight">How QuickDrop Works</h3>
+            <p class="text-lg font-semibold text-bright-turquoise-800 mb-12 max-w-3xl mx-auto leading-relaxed">Discover the effortless journey of your parcel with our innovative process.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
                 <div class="relative bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg card-tilt">
                     <span class="absolute -top-4 -left-4 bg-bright-turquoise-700 text-white font-bold text-lg rounded-full w-10 h-10 flex items-center justify-center">1</span>
@@ -252,4 +230,4 @@
         </div>
     </footer>
 </body>
-              </html>
+</html>
