@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickDrop - Swift Delivery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bright-turquoise': {
+                            50: '#f5fffd',
+                            100: '#e0f8f4',
+                            200: '#c1f0e9',
+                            300: '#9ce6dd',
+                            400: '#7adbd0',
+                            500: '#34c0b3', // Base hue
+                            600: '#2ca69b',
+                            700: '#248880',
+                            800: '#1d6c66',
+                            900: '#185851',
+                            950: '#123f3a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(44, 166, 155, 0.3); }
+            50% { box-shadow: 0 0 12px 5px rgba(44, 166, 155, 0); }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-fade-in-down { animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both; }
+        .animate-pulse-glow { animation: pulseGlow 2.5s infinite ease-in-out; }
+        .bg-gradient-animated {
+            background: linear-gradient(45deg, #2ca69b, #7adbd0, #9ce6dd, #2ca69b);
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease-in-out infinite;
+        }
+        .card-tilt {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: perspective(1000px);
+        }
+        .card-tilt:hover {
+            transform: perspective(1000px) translateY(-6px) rotateX(4deg) rotateY(4deg);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15), 0 0 10px rgba(44, 166, 155, 0.2);
+        }
+        .hero-clip {
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+        .wave-divider {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23f5fffd" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,213.3C960,224,1056,192,1152,181.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom;
+            background-size: cover;
+        }
+        .button-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .button-ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+        .button-ripple:hover::after {
+            width: 200px;
+            height: 200px;
+        }
+        .focus-visible:focus {
+            outline: 3px solid #2ca69b;
+            outline-offset: 2px;
+        }
+        .nav-toggle { display: none; }
+        .nav-menu { display: flex; }
+        @media (max-width: 767px) {
+            .nav-toggle { display: block; }
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #f5fffd;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+            }
+            .nav-toggle:checked ~ .nav-menu { display: flex; }
+        }
+        .bg-parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            transform: translateZ(0);
+        }
+    </style>
+</head>
+<body class="bg-bright-turquoise-50 font-sans antialiased">
+    <!-- Header -->
+    <header class="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center" role="navigation" aria-label="Main navigation">
+            <div class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-bright-turquoise-600 to-bright-turquoise-400">
+                QuickDrop
+            </div>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle hidden">
+            <label for="nav-toggle" class="md:hidden cursor-pointer">
+                <svg class="w-6 h-6 text-bright-turquoise-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                </svg>
+            </label>
+            <div class="nav-menu items-center space-y-4 md:space-y-0 md:space-x-6 md:flex">
+                <a href="/" class="text-bright-turquoise-800 hover:text-bright-turquoise-600 transition duration-300 focus-visible" aria-current="page">Home</a>
+                <a href="/track" class="text-bright-turquoise-800 hover:text-bright-turquoise-600 transition duration-300 focus-visible">Track</a>
+                <a href="/rider" class="text-bright-turquoise-800 hover:text-bright-turquoise-600 transition duration-300 focus-visible">Rider</a>
+                <a href="/contact" class="text-bright-turquoise-800 hover:text-bright-turquoise-600 transition duration-300 focus-visible">Contact</a>
+                <a href="/auth/login" class="text-bright-turquoise-600 border border-bright-turquoise-600 px-6 py-2 rounded-full hover:bg-bright-turquoise-600 hover:text-white transition duration-300 button-ripple focus-visible md:ml-4">Login</a>
+                <a href="/auth/register" class="bg-gradient-to-r from-bright-turquoise-600 to-bright-turquoise-400 text-white px-6 py-2 rounded-full hover:scale-105 transition transform duration-300 button-ripple animate-pulse-glow focus-visible">Register</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-animated text-white py-28 hero-clip overflow-hidden bg-parallax">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.15"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30v4h-2V4h-4V2h4V0h2v2h4v2h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-60"></div>
+        <div class="wave-divider"></div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 animate-fade-in-down tracking-tight leading-tight">Swift Delivery, Redefined</h2>
+            <p class="text-xl mb-10 max-w-3xl mx-auto animate-fade-in-up leading-relaxed">Unleash the power of QuickDrop’s innovative logistics for seamless, lightning-fast parcel delivery.</p>
+            <form action="/track" method="post" class="max-w-md mx-auto flex animate-fade-in-up" role="search" aria-label="Track parcel">
+                <label for="trackingNumber" class="sr-only">Tracking Number</label>
+                <input type="text" id="trackingNumber" name="trackingNumber" placeholder="Enter tracking number" class="w-full px-5 py-3 rounded-l-full bg-white/10 backdrop-blur-lg text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-bright-turquoise-300 transition duration-300 focus-visible">
+                <button type="submit" class="bg-bright-turquoise-700 text-white px-8 py-3 rounded-r-full hover:bg-bright-turquoise-800 transition duration-300 button-ripple flex items-center gap-2 focus-visible">
+                    Track Now
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Become a Rider Section -->
+    <section class="py-20 bg-white/80 backdrop-blur-md relative">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-4xl font-semibold mb-8 text-bright-turquoise-900 animate-fade-in-down leading-tight">Join the QuickDrop Crew</h3>
+            <p class="text-lg text-bright-turquoise-800 mb-10 max-w-3xl mx-auto animate-fade-in-up leading-relaxed">Ride with purpose, deliver joy, and earn rewards with QuickDrop’s rider program.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/rider/register" class="inline-block px-8 py-4 bg-bright-turquoise-700 text-white font-semibold rounded-full hover:scale-105 transition transform duration-300 button-ripple animate-pulse-glow focus-visible">Become a Rider</a>
+                <a href="/rider/login" class="inline-block px-8 py-4 text-bright-turquoise-600 border border-bright-turquoise-600 font-semibold rounded-full hover:bg-bright-turquoise-600 hover:text-white transition duration-300 button-ripple focus-visible">Rider Login</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-20 bg-bright-turquoise-50 relative">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-4xl font-semibold mb-8 text-bright-turquoise-900 animate-fade-in-down leading-tight">How QuickDrop Works</h3>
+            <p class="text-lg font-semibold text-bright-turquoise-800 mb-12 max-w-3xl mx-auto animate-fade-in-up leading-relaxed">Discover the effortless journey of your parcel with our innovative process.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <div class="relative bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg card-tilt">
+                    <span class="absolute -top-4 -left-4 bg-bright-turquoise-700 text-white font-bold text-lg rounded-full w-10 h-10 flex items-center justify-center">1</span>
+                    <h4 class="text-xl font-bold mt-4 text-bright-turquoise-800 mb-2">Pack</h4>
+                    <p class="text-bright-turquoise-900 leading-relaxed">Securely pack your parcel for a safe journey.</p>
+                </div>
+                <div class="relative bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg card-tilt">
+                    <span class="absolute -top-4 -left-4 bg-bright-turquoise-700 text-white font-bold text-lg rounded-full w-10 h-10 flex items-center justify-center">2</span>
+                    <h4 class="text-xl font-bold mt-4 text-bright-turquoise-800 mb-2">Book</h4>
+                    <p class="text-bright-turquoise-900 leading-relaxed">Schedule a pickup or drop off at a nearby center.</p>
+                </div>
+                <div class="relative bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg card-tilt">
+                    <span class="absolute -top-4 -left-4 bg-bright-turquoise-700 text-white font-bold text-lg rounded-full w-10 h-10 flex items-center justify-center">3</span>
+                    <h4 class="text-xl font-bold mt-4 text-bright-turquoise-800 mb-2">Track</h4>
+                    <p class="text-bright-turquoise-900 leading-relaxed">Monitor your package in real-time.</p>
+                </div>
+                <div class="relative bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg card-tilt">
+                    <span class="absolute -top-4 -left-4 bg-bright-turquoise-700 text-white font-bold text-lg rounded-full w-10 h-10 flex items-center justify-center">4</span>
+                    <h4 class="text-xl font-bold mt-4 text-bright-turquoise-800 mb-2">Receive</h4>
+                    <p class="text-bright-turquoise-900 leading-relaxed">Get your package delivered safely to your doorstep.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-b from-bright-turquoise-900 to-bright-turquoise-950 text-white py-12 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-bright-turquoise-200">QuickDrop</h3>
+                    <p class="text-bright-turquoise-300 leading-relaxed">Swift delivery, every time.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-bright-turquoise-200">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/about" class="text-bright-turquoise-300 hover:text-bright-turquoise-100 transition duration-300 focus-visible relative group">About Us<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-bright-turquoise-100 transition-all duration-300 group-hover:w-full"></span></a></li>
+                        <li><a href="/faq" class="text-bright-turquoise-300 hover:text-bright-turquoise-100 transition duration-300 focus-visible relative group">FAQ<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-bright-turquoise-100 transition-all duration-300 group-hover:w-full"></span></a></li>
+                        <li><a href="/terms" class="text-bright-turquoise-300 hover:text-bright-turquoise-100 transition duration-300 focus-visible relative group">Terms of Service<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-bright-turquoise-100 transition-all duration-300 group-hover:w-full"></span></a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-bright-turquoise-200">Contact</h3>
+                    <p class="text-bright-turquoise-300 leading-relaxed">Email: support@quickdrop.com</p>
+                    <p class="text-bright-turquoise-300 leading-relaxed">Phone: +1-800-987-6543</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-bright-turquoise-200">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://linkedin.com/company/quickdrop" class="text-bright-turquoise-300 hover:text-bright-turquoise-100 transition duration-300 focus-visible">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.56v14.88A4.56 4.56 0 0 1 19.44 24H4.56A4.56 4.56 0 0 1 0 19.44V4.56A4.56 4.56 0 0 1 4.56 0h14.88A4.56 4.56 0 0 1 24 4.56zM9.6 18.24v-7.2H7.2v7.2h2.4zm-.24-8.16c.84 0 1.44-.6 1.44-1.44s-.6-1.44-1.44-1.44-1.44.6-1.44 1.44.6 1.44 1.44 1.44zm7.44 8.16v-4.08c0-2.16-.48-3.84-3-3.84-1.2 0-2.04.72-2.4 1.44h-.12v-1.2h-2.4v7.68h2.4v-4.08c0-1.08.24-2.16 1.56-2.16 1.32 0 1.32 1.2 1.32 2.16v4.08h2.4z"/>
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com/quickdrop" class="text-bright-turquoise-300 hover:text-bright-turquoise-100 transition duration-300 focus-visible">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.46 6c-.77.34-1.6.57-2.46.67.88-.53 1.56-1.37 1.88-2.37-.83.5-1.74.85-2.72 1.05A4.28 4.28 0 0 0 16.1 4c-2.36 0-4.28 1.92-4.28 4.28 0 .34.04.67.11 1A12.14 12.14 0 0 1 3.15 5.1a4.28 4.28 0 0 0 1.32 5.71 4.25 4.25 0 0 1-1.94-.53v.05c0 2.07 1.47 3.8 3.43 4.2a4.3 4.3 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.97A8.58 8.58 0 0 1 2 19.54a12.1 12.1 0 0 0 6.56 1.92c7.87 0 12.18-6.52 12.18-12.18 0-.18 0-.37-.01-.55A8.7 8.7 0 0 0 22.46 6z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 text-center text-bright-turquoise-300">
+                © 2025 QuickDrop. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+              </html>
