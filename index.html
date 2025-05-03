@@ -7,12 +7,12 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #ffeb3b; /* Neon yellow background */
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec); /* Soft gradient */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -26,22 +26,25 @@
             max-height: 500px;
             position: relative;
             overflow: hidden;
-            background-color: #ff4081; /* Neon pink */
-            border: 8px solid #000;
-            box-shadow: 10px 10px 0 #000;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 6px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            border-radius: 12px;
             margin: 2rem auto;
+            backdrop-filter: blur(10px);
         }
         .slide {
             width: 100%;
             height: 100%;
             display: none;
-            padding: 2rem;
+            padding: 2.5rem;
             box-sizing: border-box;
             position: absolute;
-            background-color: #26a69a; /* Teal */
+            background: rgba(255, 255, 255, 0.2);
             border: 4px solid #000;
-            box-shadow: 5px 5px 0 #000;
+            box-shadow: 6px 6px 0 #000;
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
             transition: transform 0.3s ease;
         }
         .slide.active {
@@ -49,27 +52,26 @@
             transform: translateX(0);
         }
         .slide h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 900;
-            color: #000;
+            color: #ff4081; /* Neon pink */
+            margin-bottom: 1.2rem;
             text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            text-shadow: 3px 3px #ffeb3b;
         }
         .slide p, .slide li {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #000;
+            color: #1a1a1a; /* Dark gray for readability */
             line-height: 1.6;
         }
         .slide ul {
             list-style: none;
-            padding-left: 1rem;
+            padding-left: 0;
         }
         .slide li::before {
-            content: "★";
-            color: #ffeb3b;
-            margin-right: 0.5rem;
+            content: "➤";
+            color: #26a69a; /* Teal */
+            margin-right: 0.8rem;
         }
         /* Title Slide Specific Styles */
         #slide0 {
@@ -78,18 +80,18 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background-color: #ab47bc; /* Purple for title slide */
+            background: rgba(171, 71, 188, 0.3); /* Purple tint */
+            backdrop-filter: blur(12px);
         }
         #slide0 h1 {
-            font-size: 3rem;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-        #slide0 p {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2.8rem;
             color: #fff;
             text-shadow: 2px 2px #000;
+        }
+        #slide0 p {
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: 800;
         }
         .nav-buttons {
             display: flex;
@@ -99,43 +101,43 @@
             margin: 2rem 0;
         }
         .nav-buttons button, .export-all-button {
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
-            font-weight: 900;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 800;
             text-transform: uppercase;
-            background-color: #ab47bc; /* Purple */
-            color: #fff;
+            background: rgba(255, 215, 64, 0.9); /* Yellow */
+            color: #000;
             border: 4px solid #000;
             box-shadow: 5px 5px 0 #000;
-            border-radius: 0;
+            border-radius: 6px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .export-all-button {
-            background-color: #ff5722; /* Orange */
+            background: rgba(255, 87, 34, 0.9); /* Orange */
         }
         .nav-buttons button:hover, .export-all-button:hover {
             transform: translate(-2px, -2px);
             box-shadow: 7px 7px 0 #000;
         }
         .nav-buttons button:disabled {
-            background-color: #ccc;
+            background: rgba(200, 200, 200, 0.5);
             color: #666;
             cursor: not-allowed;
             box-shadow: none;
         }
         .export-button {
             position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 900;
-            background-color: #ffd740; /* Yellow */
-            color: #000;
+            bottom: 1.2rem;
+            right: 1.2rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 800;
+            background: rgba(38, 166, 154, 0.9); /* Teal */
+            color: #fff;
             border: 3px solid #000;
             box-shadow: 4px 4px 0 #000;
-            border-radius: 0;
+            border-radius: 6px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -150,19 +152,19 @@
                 height: 70vh;
             }
             .slide h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             .slide p, .slide li {
                 font-size: 1rem;
             }
             #slide0 h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
             #slide0 p {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
             .nav-buttons button, .export-all-button {
-                padding: 0.8rem 1.5rem;
+                padding: 0.7rem 1.5rem;
                 font-size: 1rem;
             }
         }
@@ -171,13 +173,13 @@
                 height: 80vh;
             }
             .slide h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             .slide p, .slide li {
                 font-size: 0.9rem;
             }
             #slide0 h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             #slide0 p {
                 font-size: 1rem;
@@ -188,10 +190,10 @@
             }
             .nav-buttons button, .export-all-button {
                 width: 100%;
-                max-width: 250px;
+                max-width: 220px;
             }
             .export-button {
-                padding: 0.6rem 1rem;
+                padding: 0.5rem 1rem;
                 font-size: 0.8rem;
             }
         }
@@ -371,4 +373,4 @@
         updateSlide();
     </script>
 </body>
-    </html>
+</html>
