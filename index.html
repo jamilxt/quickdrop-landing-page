@@ -71,6 +71,26 @@
             color: #ffeb3b;
             margin-right: 0.5rem;
         }
+        /* Title Slide Specific Styles */
+        #slide0 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #ab47bc; /* Purple for title slide */
+        }
+        #slide0 h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        #slide0 p {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 2px 2px #000;
+        }
         .nav-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -135,6 +155,12 @@
             .slide p, .slide li {
                 font-size: 1rem;
             }
+            #slide0 h1 {
+                font-size: 2.5rem;
+            }
+            #slide0 p {
+                font-size: 1.2rem;
+            }
             .nav-buttons button, .export-all-button {
                 padding: 0.8rem 1.5rem;
                 font-size: 1rem;
@@ -149,6 +175,12 @@
             }
             .slide p, .slide li {
                 font-size: 0.9rem;
+            }
+            #slide0 h1 {
+                font-size: 2rem;
+            }
+            #slide0 p {
+                font-size: 1rem;
             }
             .nav-buttons {
                 flex-direction: column;
@@ -167,7 +199,12 @@
 </head>
 <body>
     <div class="slide-container">
-        <section class="slide active" id="slide1">
+        <section class="slide active" id="slide0">
+            <h1>How Bangladeshi Founders Can Create a Strong Pitch for Investors</h1>
+            <p>A Guide to Winning Investor Confidence</p>
+            <button class="export-button" onclick="exportSlide('slide0')">Export as Image</button>
+        </section>
+        <section class="slide" id="slide1">
             <h1>1. Big Dreams Need Proof</h1>
             <p>Investors want proof your business works and can grow.</p>
             <ul>
@@ -334,4 +371,4 @@
         updateSlide();
     </script>
 </body>
-</html>
+    </html>
